@@ -79,7 +79,7 @@ const init = async () => {
         io.emit('chat message', JSON.parse(message));
     })
 
-    server.listen(process.env.WEB_APP_PORT, () => console.log(`Server Started at PORT:${process.env.WEB_APP_PORT}`));
+    server.listen(process.env.WEB_API_PORT, () => console.log(`Server Started at PORT:${process.env.WEB_API_PORT}`));
 
 };
 
