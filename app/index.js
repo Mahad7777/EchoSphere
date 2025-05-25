@@ -5,9 +5,9 @@ const express = require("express");
 const cors = require("cors");
 const app = express();
 const path = require("path");
-const router = require("./app/routes/route")
+const router = require("./routes/route")
 
-const { createServer } = require("./app/socket/socket")
+const { createServer } = require("./socket/socket")
 
 // Configure cors to allow only requests from port 8888
 const corsOptions = {
