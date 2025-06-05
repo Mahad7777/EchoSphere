@@ -40,9 +40,26 @@ services:
       - mongo
       - redis
       - kafka
-    env_file:
-      - .env
+    environment:
+      # API ENV'S
+      WEB_API_PORT: 8000
+      WEB_API_ALLOWED_ORIGIN: '["http://localhost:5173"]'
 
+      # DATABASE ENV'S
+      MONGO_CONNECT_STRING: mongodb://mongo-db:27017/scalable-chat-app-db
+
+      # SOCKET ENV'S
+      SOCKET_ALLOWED_ORIGIN: '["http://localhost:5173"]'
+
+      # REDIS ENV'S
+      REDIS_CHANNEL: redis-message-channel
+
+      # KAFKA ENV'S
+      KAFKA_GROUP_ID: scalable-chat-app
+      KAFKA_BROKERS: kafka-broker:9092
+      PROCESS_KAFKA_MESSAGE_LIMIT: 100
+      KAFKA_TOPIC: chat-updates
+      KAFKA_NO_OF_PARTITIONS: 1
 
   frontend:
     build:
@@ -53,5 +70,3 @@ services:
       - "5173:5173"
     depends_on:
       - backend
-    # env_file:
-    #   - .env

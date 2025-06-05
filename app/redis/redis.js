@@ -1,6 +1,6 @@
 
-const redis = require('ioredis');
-const redisNor = new redis();
+const Redis = require('ioredis');
+const redisNor = new Redis({ host:'redis', port: 6379 });
 
 const fetchMessagesFromRedis = async () => {
     return await redisNor.lrange("messages", 0, -1)

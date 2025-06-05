@@ -1,27 +1,14 @@
 const initStoreKafka = require("../kafka/KafkaProducer");
 const { Server } = require("socket.io");
-const redis = require('ioredis');
+const Redis = require('ioredis');
 const http = require("http");
 const redisChannel = process.env.REDIS_CHANNEL
-// const redisClient = redis.createClient({ host:'redis', port: 6379 });
-// const redisPub = new redis({ host: 'redis', port: 6379 });
-// const redisNor = new redis({ host: 'redis', port: 6379 });
-// const redisClient = new redis({ url: 'redis://redis:6379' });
-// const redisPub = new redis({ url: 'redis://redis:6379' });
-// const redisNor = new redis({ url: 'redis://redis:6379' });
-
-const redisClient = new redis({ host: 'redis', port: 6379 });
-const redisPub = new redis({ host: 'redis', port: 6379 });
-const redisNor = new redis({ host: 'redis', port: 6379 });
+const redisClient = new Redis({ host:'redis', port: 6379 });
+const redisPub = new Redis({ host:'redis', port: 6379 });
+const redisNor = new Redis({ host:'redis', port: 6379 });
 
 let io;
 let server;
-
-console.log('redisClient host:', redisClient.options.host);
-console.log('redisPub host:', redisPub.options.host);
-console.log('redisNor host:', redisNor.options.host);
-
-
 
 const createServer = async (app) => {
     server = http.createServer(app);
