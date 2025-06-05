@@ -57,7 +57,7 @@ services:
       # KAFKA ENV'S
       KAFKA_GROUP_ID: scalable-chat-app
       KAFKA_BROKERS: kafka-broker:9092
-      PROCESS_KAFKA_MESSAGE_LIMIT: 100
+      PROCESS_KAFKA_MESSAGE_LIMIT: 5
       KAFKA_TOPIC: chat-updates
       KAFKA_NO_OF_PARTITIONS: 1
 

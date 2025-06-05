@@ -16,25 +16,23 @@ module.exports = async function () {
     let messages = [];
 
     await consumer.run({
-        
-        eachMessage: async ({ topic, partition, message }) => {
-            console.log(JSON.parse(message.value.toString()))
+    eachBatch: async ({ batch, resolveOffset, heartbeat, commitOffsetsIfNecessary }) => {
+        const messages = batch.messages.map(m => JSON.parse(m.value.toString()));
 
-            messages.push(JSON.parse(message.value.toString()));
-            messages_count++;
-            
-            console.log(messages)
+        try {
+        await storeMessages(messages);
 
-            
-            if(messages_count == process.env.PROCESS_KAFKA_MESSAGE_LIMIT){
-                await storeMessages(messages);
-                messages_count = 0;
-                messages = [];
-            }
+        for (const message of batch.messages) {
+            resolveOffset(message.offset); // Mark message as handled
+        }
 
-        
-        },
-        
-    })
+        await commitOffsetsIfNecessary(); // Actually commit offsets
+        await heartbeat(); // Keep connection alive
+        } catch (err) {
+        console.error("Failed to store messages:", err.message);
+        // Do NOT resolve offsets — retry will happen on next run
+        }
+    },
+    });
     
 }
