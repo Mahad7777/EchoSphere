@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: backend
+  template:
+    metadata:
+      labels:
+        app: backend
+    spec:
+      containers:
+      - name: backend
+        image: chat-backend:latest
+        ports:
+        - containerPort: 8000
+        env:
+        - name: WEB_API_PORT
+          value: "8000"
+        - name: WEB_API_ALLOWED_ORIGIN
+          value: '["http://localhost:5173"]'
+        - name: MONGO_CONNECT_STRING
+          value: mongodb://mongo-db:27017/scalable-chat-app-db
+        - name: SOCKET_ALLOWED_ORIGIN
+          value: '["http://localhost:5173"]'
+        - name: REDIS_CHANNEL
+          value: redis-message-channel
+        - name: KAFKA_GROUP_ID
+          value: scalable-chat-app
+        - name: KAFKA_BROKERS
+          value: kafka-broker:9092
+        - name: PROCESS_KAFKA_MESSAGE_LIMIT
+          value: "100"
+        - name: KAFKA_TOPIC
+          value: chat-updates
+        - name: KAFKA_NO_OF_PARTITIONS
+          value: "1"
