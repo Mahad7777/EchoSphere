@@ -14,6 +14,6 @@ spec:
     spec:
       containers:
       - name: frontend
-        image: chat-frontend:latest
+        image: mahad777/echosphere-frontend:fix
         ports:
         - containerPort: 5173

@@ -14,18 +14,19 @@ spec:
     spec:
       containers:
       - name: backend
-        image: chat-backend:latest
+        image: mahad777/echosphere-backend:first
         ports:
         - containerPort: 8000
         env:
         - name: WEB_API_PORT
           value: "8000"
-        - name: WEB_API_ALLOWED_ORIGIN
-          value: '["http://localhost:5173"]'
+
         - name: MONGO_CONNECT_STRING
           value: mongodb://mongo-db:27017/scalable-chat-app-db
+        - name: WEB_API_ALLOWED_ORIGIN
+          value: '["http://127.0.0.1:51295"]'
         - name: SOCKET_ALLOWED_ORIGIN
-          value: '["http://localhost:5173"]'
+          value: '["http://127.0.0.1:51295", "ws://127.0.0.1:51295"]'
         - name: REDIS_CHANNEL
           value: redis-message-channel
         - name: KAFKA_GROUP_ID
