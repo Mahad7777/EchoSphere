@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: frontend
+  template:
+    metadata:
+      labels:
+        app: frontend
+    spec:
+      containers:
+      - name: frontend
+        image: mahad777/echosphere-frontend:SvelteFinal
+        imagePullPolicy: Always   
+        ports:
+        - containerPort: 5173
+        # env:
+        # - name: VITE_API_BASE_URL
+        #   value: "http://52.91.248.236:30002"

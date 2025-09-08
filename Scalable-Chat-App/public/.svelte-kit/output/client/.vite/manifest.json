@@ -1,0 +1,70 @@
+{
+  ".svelte-kit/generated/client-optimized/app.js": {
+    "dynamicImports": [
+      ".svelte-kit/generated/client-optimized/nodes/0.js",
+      ".svelte-kit/generated/client-optimized/nodes/1.js",
+      ".svelte-kit/generated/client-optimized/nodes/2.js"
+    ],
+    "file": "_app/immutable/entry/app.us9D42De.js",
+    "imports": [
+      "_scheduler.zMJaRgub.js",
+      "_index.yUutpuvV.js"
+    ],
+    "isEntry": true,
+    "src": ".svelte-kit/generated/client-optimized/app.js"
+  },
+  ".svelte-kit/generated/client-optimized/nodes/0.js": {
+    "file": "_app/immutable/nodes/0.82TGCRr4.js",
+    "imports": [
+      "_scheduler.zMJaRgub.js",
+      "_index.yUutpuvV.js"
+    ],
+    "isDynamicEntry": true,
+    "isEntry": true,
+    "src": ".svelte-kit/generated/client-optimized/nodes/0.js"
+  },
+  ".svelte-kit/generated/client-optimized/nodes/1.js": {
+    "file": "_app/immutable/nodes/1._SGoP_7F.js",
+    "imports": [
+      "_scheduler.zMJaRgub.js",
+      "_index.yUutpuvV.js",
+      "_entry.zqN2Kkmc.js"
+    ],
+    "isDynamicEntry": true,
+    "isEntry": true,
+    "src": ".svelte-kit/generated/client-optimized/nodes/1.js"
+  },
+  ".svelte-kit/generated/client-optimized/nodes/2.js": {
+    "file": "_app/immutable/nodes/2.C8Je4gfv.js",
+    "imports": [
+      "_scheduler.zMJaRgub.js",
+      "_index.yUutpuvV.js"
+    ],
+    "isDynamicEntry": true,
+    "isEntry": true,
+    "src": ".svelte-kit/generated/client-optimized/nodes/2.js"
+  },
+  "_entry.zqN2Kkmc.js": {
+    "file": "_app/immutable/chunks/entry.zqN2Kkmc.js",
+    "imports": [
+      "_scheduler.zMJaRgub.js"
+    ]
+  },
+  "_index.yUutpuvV.js": {
+    "file": "_app/immutable/chunks/index.yUutpuvV.js",
+    "imports": [
+      "_scheduler.zMJaRgub.js"
+    ]
+  },
+  "_scheduler.zMJaRgub.js": {
+    "file": "_app/immutable/chunks/scheduler.zMJaRgub.js"
+  },
+  "node_modules/@sveltejs/kit/src/runtime/client/entry.js": {
+    "file": "_app/immutable/entry/start.t0ep3y-i.js",
+    "imports": [
+      "_entry.zqN2Kkmc.js"
+    ],
+    "isEntry": true,
+    "src": "node_modules/@sveltejs/kit/src/runtime/client/entry.js"
+  }
+}
