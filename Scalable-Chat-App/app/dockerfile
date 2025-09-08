@@ -1,0 +1,19 @@
+# 1. Use Node base image
+FROM node:18
+
+# 2. Set working directory
+WORKDIR /usr/src/app
+
+# 3. Install app dependencies and PM2
+COPY package*.json ./
+RUN npm install -g pm2 && npm install
+
+# 4. Copy app code
+COPY . .
+
+
+# 5. Expose port if needed
+EXPOSE 8000
+
+# 6. Start all apps using PM2
+CMD ["pm2-runtime", "start", "pm2.config.js"]
