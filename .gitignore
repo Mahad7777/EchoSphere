@@ -1,2 +1,6 @@
 node_modules
 cmds
+.DS_Store
+.terraform/
+.terraform*
+terraform*
