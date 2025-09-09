@@ -69,7 +69,7 @@
 <div class="container">
 	<div class="child-container">
 		<div class="header">
-			<h2>Scalable Chat App</h2>
+			<h2>Scalable Chat</h2>
 		</div>
 
 		<div class="chat-whole-section">
