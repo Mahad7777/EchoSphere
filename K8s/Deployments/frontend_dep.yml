@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: frontend
-        image: mahad777/echosphere-frontend:Final
+        image: mahad777/echosphere-frontend:SvelteFinal
         imagePullPolicy: Always   
         ports:
         - containerPort: 5173

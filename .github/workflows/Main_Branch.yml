@@ -28,6 +28,13 @@ jobs:
           IMAGE=mahad777/echosphere-backend:${{ github.sha }}
           docker build -t $IMAGE ./Scalable-Chat-App/app
           docker push $IMAGE
+      
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
 
       - name: Configure kubeconfig
         run: |
@@ -60,6 +67,13 @@ jobs:
           IMAGE=mahad777/echosphere-frontend:${{ github.sha }}
           docker build -t $IMAGE ./Scalable-Chat-App/public
           docker push $IMAGE
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
 
       - name: Configure kubeconfig
         run: |
