@@ -9,10 +9,6 @@
 	let messagesContainer;
 
 	onMount(async () => {
-		// const response = await fetch('http://chat-backend:8000/api/get_messages', { method: 'POST' });
-		// const messageArray = await response.json();
-
-		// socket = io('http://chat-backend:8000');
 
 		const response = await fetch('/api/get_messages', { method: 'POST' });
 		const messageArray = await response.json();
