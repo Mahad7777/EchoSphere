@@ -1,0 +1,74 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "Scalable-Chat-App/app/**"
+      - "Scalable-Chat-App/public/**"
+
+jobs:
+  backend:
+    name: Build & Deploy Backend
+    runs-on: ubuntu-latest
+    if: contains(github.event.head_commit.message, 'skip-backend') == false
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Log in to DockerHub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build & push backend image
+        run: |
+          IMAGE=mahad777/echosphere-backend:${{ github.sha }}
+          docker build -t $IMAGE ./Scalable-Chat-App/app
+          docker push $IMAGE
+
+      - name: Configure kubeconfig
+        run: |
+          aws eks update-kubeconfig \
+            --region us-east-1 \
+            --name demo-eks-cluster
+
+      - name: Deploy backend to EKS
+        run: |
+          kubectl set image deployment/backend-deployment \
+            backend=mahad777/echosphere-backend:${{ github.sha }}
+          kubectl rollout status deployment/backend-deployment
+
+  frontend:
+    name: Build & Deploy Frontend
+    runs-on: ubuntu-latest
+    if: contains(github.event.head_commit.message, 'skip-frontend') == false
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Log in to DockerHub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build & push frontend image
+        run: |
+          IMAGE=mahad777/echosphere-frontend:${{ github.sha }}
+          docker build -t $IMAGE ./Scalable-Chat-App/public
+          docker push $IMAGE
+
+      - name: Configure kubeconfig
+        run: |
+          aws eks update-kubeconfig \
+            --region us-east-1 \
+            --name demo-eks-cluster
+
+      - name: Deploy frontend to EKS
+        run: |
+          kubectl set image deployment/frontend-deployment \
+            frontend=mahad777/echosphere-frontend:${{ github.sha }}
+          kubectl rollout status deployment/frontend-deployment
