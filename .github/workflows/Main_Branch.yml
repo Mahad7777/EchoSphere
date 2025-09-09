@@ -12,7 +12,10 @@ jobs:
   backend:
     name: Build & Deploy Backend
     runs-on: ubuntu-latest
-    if: contains(github.event.head_commit.message, 'skip-backend') == false
+    if: |
+      contains(join(github.event.commits.*.modified), 'Scalable-Chat-App/app/') ||
+      contains(join(github.event.commits.*.added), 'Scalable-Chat-App/app/') ||
+      contains(join(github.event.commits.*.removed), 'Scalable-Chat-App/app/')
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -28,7 +31,7 @@ jobs:
           IMAGE=mahad777/echosphere-backend:${{ github.sha }}
           docker build -t $IMAGE ./Scalable-Chat-App/app
           docker push $IMAGE
-      
+
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
@@ -51,7 +54,10 @@ jobs:
   frontend:
     name: Build & Deploy Frontend
     runs-on: ubuntu-latest
-    if: contains(github.event.head_commit.message, 'skip-frontend') == false
+    if: |
+      contains(join(github.event.commits.*.modified), 'Scalable-Chat-App/public/') ||
+      contains(join(github.event.commits.*.added), 'Scalable-Chat-App/public/') ||
+      contains(join(github.event.commits.*.removed), 'Scalable-Chat-App/public/')
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
