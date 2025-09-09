@@ -1,50 +1,64 @@
 name: CI/CD Pipeline
-
 on:
   push:
     branches:
       - main
-    paths:
-      - "Scalable-Chat-App/app/**"
-      - "Scalable-Chat-App/public/**"
 
 jobs:
-  backend:
-    name: Build & Deploy Backend
+  detect-changes:
+    name: Detect Changes
     runs-on: ubuntu-latest
-    if: |
-      contains(join(github.event.commits.*.modified), 'Scalable-Chat-App/app/') ||
-      contains(join(github.event.commits.*.added), 'Scalable-Chat-App/app/') ||
-      contains(join(github.event.commits.*.removed), 'Scalable-Chat-App/app/')
+    outputs:
+      backend: ${{ steps.filter.outputs.backend }}
+      frontend: ${{ steps.filter.outputs.frontend }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
+        
+      - name: Check for changes
+        uses: dorny/paths-filter@v2
+        id: filter
+        with:
+          filters: |
+            backend:
+              - 'Scalable-Chat-App/app/**'
+            frontend:
+              - 'Scalable-Chat-App/public/**'
 
+  backend:
+    name: Build & Deploy Backend
+    needs: detect-changes
+    if: needs.detect-changes.outputs.backend == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        
       - name: Log in to DockerHub
         uses: docker/login-action@v2
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-
+          
       - name: Build & push backend image
         run: |
           IMAGE=mahad777/echosphere-backend:${{ github.sha }}
           docker build -t $IMAGE ./Scalable-Chat-App/app
           docker push $IMAGE
-
+          
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-east-1
-
+          
       - name: Configure kubeconfig
         run: |
           aws eks update-kubeconfig \
             --region us-east-1 \
             --name demo-eks-cluster
-
+            
       - name: Deploy backend to EKS
         run: |
           kubectl set image deployment/backend-deployment \
@@ -53,40 +67,38 @@ jobs:
 
   frontend:
     name: Build & Deploy Frontend
+    needs: detect-changes
+    if: needs.detect-changes.outputs.frontend == 'true'
     runs-on: ubuntu-latest
-    if: |
-      contains(join(github.event.commits.*.modified), 'Scalable-Chat-App/public/') ||
-      contains(join(github.event.commits.*.added), 'Scalable-Chat-App/public/') ||
-      contains(join(github.event.commits.*.removed), 'Scalable-Chat-App/public/')
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-
+        
       - name: Log in to DockerHub
         uses: docker/login-action@v2
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-
+          
       - name: Build & push frontend image
         run: |
           IMAGE=mahad777/echosphere-frontend:${{ github.sha }}
           docker build -t $IMAGE ./Scalable-Chat-App/public
           docker push $IMAGE
-
+          
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-east-1
-
+          
       - name: Configure kubeconfig
         run: |
           aws eks update-kubeconfig \
             --region us-east-1 \
             --name demo-eks-cluster
-
+            
       - name: Deploy frontend to EKS
         run: |
           kubectl set image deployment/frontend-deployment \
