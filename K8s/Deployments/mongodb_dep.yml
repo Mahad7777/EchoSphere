@@ -17,3 +17,15 @@ spec:
         image: mongo:7.0
         ports:
         - containerPort: 27017
+        livenessProbe:
+          tcpSocket:
+            port: 27017
+          initialDelaySeconds: 15
+          periodSeconds: 10
+          failureThreshold: 6
+        readinessProbe:
+          tcpSocket:
+            port: 27017
+          initialDelaySeconds: 10
+          periodSeconds: 5
+          failureThreshold: 6

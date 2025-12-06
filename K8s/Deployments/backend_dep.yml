@@ -18,6 +18,18 @@ spec:
         imagePullPolicy: Always
         ports:
         - containerPort: 8000
+        livenessProbe:
+          tcpSocket:
+            port: 8000
+          initialDelaySeconds: 10
+          periodSeconds: 10
+          failureThreshold: 3
+        readinessProbe:
+          tcpSocket:
+            port: 8000
+          initialDelaySeconds: 5
+          periodSeconds: 5
+          failureThreshold: 3
         env:
         - name: WEB_API_PORT
           value: "8000"

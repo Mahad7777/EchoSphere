@@ -17,3 +17,15 @@ spec:
         image: zookeeper:3.9
         ports:
         - containerPort: 2181
+        livenessProbe:
+          tcpSocket:
+            port: 2181
+          initialDelaySeconds: 15
+          periodSeconds: 10
+          failureThreshold: 6
+        readinessProbe:
+          tcpSocket:
+            port: 2181
+          initialDelaySeconds: 10
+          periodSeconds: 5
+          failureThreshold: 6
