@@ -1,0 +1,38 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: redis-config
+  labels:
+    app: redis
+    component: configuration
+data:
+  # Redis Configuration
+  # You can add custom redis.conf settings here
+  redis.conf: |
+    # Network
+    bind 0.0.0.0
+    protected-mode no
+    port 6379
+
+    # General
+    daemonize no
+    pidfile /var/run/redis_6379.pid
+    loglevel notice
+
+    # Persistence
+    save 900 1
+    save 300 10
+    save 60 10000
+    stop-writes-on-bgsave-error yes
+    rdbcompression yes
+    rdbchecksum yes
+    dbfilename dump.rdb
+
+    # Memory Management
+    maxmemory 256mb
+    maxmemory-policy allkeys-lru
+
+    # Append Only File
+    appendonly yes
+    appendfilename "appendonly.aof"
+    appendfsync everysec
