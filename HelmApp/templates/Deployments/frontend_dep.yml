@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: frontend
+  template:
+    metadata:
+      labels:
+        app: frontend
+    spec:
+      containers:
+      - name: frontend
+        image: mahad777/echosphere-frontend:SvelteFinal
+        imagePullPolicy: Always   
+        ports:
+        - containerPort: 5173
+        livenessProbe:
+          tcpSocket:
+            port: 5173
+          initialDelaySeconds: 10
+          periodSeconds: 10
+          failureThreshold: 3
+        readinessProbe:
+          tcpSocket:
+            port: 5173
+          initialDelaySeconds: 5
+          periodSeconds: 5
+          failureThreshold: 3

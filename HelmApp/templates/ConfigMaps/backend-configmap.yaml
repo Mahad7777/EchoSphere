@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: backend-config
+  labels:
+    app: backend
+    component: configuration
+data:
+  # Application Configuration
+  WEB_API_PORT: "8000"
+  WEB_API_ALLOWED_ORIGIN: '["http://mahadsapp.duckdns.org"]'
+  SOCKET_ALLOWED_ORIGIN: '["http://mahadsapp.duckdns.org"]'
+
+  # Redis Configuration
+  REDIS_CHANNEL: "redis-message-channel"
+
+  # Kafka Configuration
+  KAFKA_GROUP_ID: "scalable-chat-app"
+  KAFKA_BROKERS: "kafka-broker:9092"
+  KAFKA_TOPIC: "chat-updates"
+  KAFKA_NO_OF_PARTITIONS: "1"
+  PROCESS_KAFKA_MESSAGE_LIMIT: "100"

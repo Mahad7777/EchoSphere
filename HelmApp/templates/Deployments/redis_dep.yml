@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: redis-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: redis
+  template:
+    metadata:
+      labels:
+        app: redis
+    spec:
+      containers:
+      - name: redis
+        image: redis:7.2  # or latest stable
+        command: ["redis-server"]
+        args: ["/usr/local/etc/redis/redis.conf"]
+        ports:
+        - containerPort: 6379
+        livenessProbe:
+          tcpSocket:
+            port: 6379
+          initialDelaySeconds: 10
+          periodSeconds: 10
+          failureThreshold: 3
+        readinessProbe:
+          tcpSocket:
+            port: 6379
+          initialDelaySeconds: 5
+          periodSeconds: 5
+          failureThreshold: 3
+        # Load environment variables from ConfigMap
+        envFrom:
+        - configMapRef:
+            name: redis-config
+        # Mount ConfigMap as config file
+        volumeMounts:
+        - name: redis-config-volume
+          mountPath: /usr/local/etc/redis
+      volumes:
+      - name: redis-config-volume
+        configMap:
+          name: redis-config
+          items:
+          - key: redis.conf
+            path: redis.conf
