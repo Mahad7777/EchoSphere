@@ -29,3 +29,7 @@ spec:
           initialDelaySeconds: 10
           periodSeconds: 5
           failureThreshold: 6
+        # Load environment variables from ConfigMap
+        envFrom:
+        - configMapRef:
+            name: zookeeper-config

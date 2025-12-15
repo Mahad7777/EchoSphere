@@ -30,24 +30,13 @@ spec:
           initialDelaySeconds: 5
           periodSeconds: 5
           failureThreshold: 3
+        # Load all environment variables from ConfigMap
+        envFrom:
+        - configMapRef:
+            name: backend-config
+        - secretRef:
+            name: app-secrets
+        # You can also override specific values or add additional env vars here
         env:
-        - name: WEB_API_PORT
-          value: "8000"
-        - name: MONGO_CONNECT_STRING
-          value: mongodb://mongo-db:27017/scalable-chat-app-db
-        - name: WEB_API_ALLOWED_ORIGIN
-          value: '["http://mahadsapp.duckdns.org"]'
-        - name: SOCKET_ALLOWED_ORIGIN
-          value: '["http://mahadsapp.duckdns.org"]'
-        - name: REDIS_CHANNEL
-          value: redis-message-channel
-        - name: KAFKA_GROUP_ID
-          value: scalable-chat-app
-        - name: KAFKA_BROKERS
-          value: kafka-broker:9092
-        - name: PROCESS_KAFKA_MESSAGE_LIMIT
-          value: "100"
-        - name: KAFKA_TOPIC
-          value: chat-updates
-        - name: KAFKA_NO_OF_PARTITIONS
-          value: "1"
+        - name: NODE_ENV
+          value: "production"

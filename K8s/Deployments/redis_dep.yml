@@ -15,6 +15,8 @@ spec:
       containers:
       - name: redis
         image: redis:7.2  # or latest stable
+        command: ["redis-server"]
+        args: ["/usr/local/etc/redis/redis.conf"]
         ports:
         - containerPort: 6379
         livenessProbe:
@@ -29,3 +31,18 @@ spec:
           initialDelaySeconds: 5
           periodSeconds: 5
           failureThreshold: 3
+        # Load environment variables from ConfigMap
+        envFrom:
+        - configMapRef:
+            name: redis-config
+        # Mount ConfigMap as config file
+        volumeMounts:
+        - name: redis-config-volume
+          mountPath: /usr/local/etc/redis
+      volumes:
+      - name: redis-config-volume
+        configMap:
+          name: redis-config
+          items:
+          - key: redis.conf
+            path: redis.conf

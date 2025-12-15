@@ -29,10 +29,7 @@ spec:
           initialDelaySeconds: 15
           periodSeconds: 5
           failureThreshold: 6
-        env:
-        - name: KAFKA_ZOOKEEPER_CONNECT
-          value: zookeeper-svc:2181
-        - name: KAFKA_ADVERTISED_LISTENERS
-          value: PLAINTEXT://kafka-broker:9092
-        - name: KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR
-          value: "1"
+        # Load environment variables from ConfigMap
+        envFrom:
+        - configMapRef:
+            name: kafka-config
